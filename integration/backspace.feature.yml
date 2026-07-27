@@ -1,6 +1,6 @@
 feature:
   name: BACKSPACE
-  status: specification-ready
+  status: specification_ready
   summary: >
     Standardized BACKSPACE behavior across input handling, domain state transitions,
     and integration contracts with controlled rollout and validation gates.
@@ -34,15 +34,15 @@ implementation_boundaries:
     - role: core-platform
       from: integration/repositories.example.yml
       expected_path: ./platform
-      status: repository-defined-awaiting-code-migration
+      status: awaiting_migration
     - role: frontend-input
       from: integration/repositories.example.yml
-      expected_path: __set_frontend_path_in_repositories_local_yml__
-      status: repository-defined
+      expected_path: <SET_FRONTEND_PATH>
+      status: configured
     - role: api-and-event-contracts
       from: integration/repositories.example.yml
-      expected_path: __set_service_path_in_repositories_local_yml__
-      status: repository-defined
+      expected_path: <SET_SERVICE_PATH>
+      status: configured
   module_mapping:
     input_event_layer:
       option: 1

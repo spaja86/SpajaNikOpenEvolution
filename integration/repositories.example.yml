@@ -12,14 +12,14 @@ integration:
       - name: example-frontend
         role: frontend-input
         url: https://github.com/spaja86/example-frontend
-        local_path: __set_frontend_path_in_repositories_local_yml__
+        local_path: <SET_FRONTEND_PATH>
         capabilities:
           - ui-input-events
           - accessibility
       - name: example-service
         role: api-and-event-contracts
         url: https://github.com/spaja86/example-service
-        local_path: __set_service_path_in_repositories_local_yml__
+        local_path: <SET_SERVICE_PATH>
         capabilities:
           - api-contracts
           - integration-events
