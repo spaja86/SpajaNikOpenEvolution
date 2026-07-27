@@ -70,7 +70,8 @@ behavior_rules:
     unsupported_context: ignore-with-telemetry
   accessibility_i18n:
     - preserve-screen-reader-friendly-updates
-    - support_locale_aware_text_segmentation_for_grapheme_cluster_and_rtl_languages
+    - locale_aware_text_segmentation
+    - rtl_language_support
 
 data_and_contracts:
   potential_changes:
@@ -108,7 +109,9 @@ verification:
     - run-existing-lint
     - run-existing-build
     - run-existing-tests
-  current_blocker: pending-platform-migration
+
+blockers:
+  - pending-platform-migration
 
 operations:
   telemetry:
