@@ -163,7 +163,7 @@ release_followup:
 
 required_inputs_before_code_implementation:
   items:
-    - migrate_core_platform_code_into_platform
-    - set_local_frontend_path_in_integration/repositories.local.yml
-    - set_local_service_path_in_integration/repositories.local.yml
-    - environment_scope_decision_for_phase_1
+    - migrate-core-platform-code-into-platform
+    - set-local-frontend-path-in-repositories-local-yml
+    - set-local-service-path-in-repositories-local-yml
+    - decide-phase-1-environment-scope
