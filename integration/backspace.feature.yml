@@ -33,7 +33,7 @@ implementation_boundaries:
   required_repositories:
     - role: core-platform
       from: integration/repositories.example.yml
-      expected_path: ./platform/
+      expected_path: ./platform
       status: pending-migration
     - role: frontend-input
       status: to-be-confirmed
@@ -78,7 +78,7 @@ data_and_contracts:
     - optional-input-edit-metadata
   compatibility_strategy:
     versioning: additive-non-breaking-first
-    gating: feature-flag-backspace-v1
+    gating: feature.backspace.v1
     migration: enable-by-consumer-capability
 
 rollout:
