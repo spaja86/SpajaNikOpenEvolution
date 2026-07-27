@@ -34,21 +34,42 @@ implementation_boundaries:
     - role: core-platform
       from: integration/repositories.example.yml
       expected_path: ./platform
-      status: pending-migration
+      status: repository-defined-awaiting-code-migration
     - role: frontend-input
-      status: to-be-confirmed
+      from: integration/repositories.example.yml
+      expected_path: __set_frontend_path_in_repositories.local.yml__
+      status: repository-defined
     - role: api-and-event-contracts
-      status: to-be-confirmed
+      from: integration/repositories.example.yml
+      expected_path: __set_service_path_in_repositories.local.yml__
+      status: repository-defined
   module_mapping:
     input_event_layer:
+      option: 1
       responsibility: detect-backspace-and-emit-intent
       ownership: frontend
     domain_application_logic:
+      option: 2
       responsibility: apply-deletion-rules-and-state-transitions
       ownership: core-platform
     integration_contracts:
+      option: 3
       responsibility: preserve-compatible-api-event-behavior
       ownership: backend-or-shared-contracts
+
+implementation_options:
+  option_1_frontend_input_event_layer:
+    scope: detect-backspace-and-emit-intent
+    owner_role: frontend-input
+    status: specified
+  option_2_domain_application_logic:
+    scope: apply-deletion-rules-and-state-transitions
+    owner_role: core-platform
+    status: specified
+  option_3_api_and_event_contracts:
+    scope: preserve-compatible-api-event-behavior
+    owner_role: api-and-event-contracts
+    status: specified
 
 behavior_rules:
   single_action:
@@ -142,6 +163,7 @@ release_followup:
 
 required_inputs_before_code_implementation:
   items:
-    - repository_for_authoritative_input_handling
-    - repository_for_api_or_event_contract_changes
+    - migrate_core_platform_code_into_./platform
+    - set_local_frontend_path_in_integration/repositories.local.yml
+    - set_local_service_path_in_integration/repositories.local.yml
     - environment_scope_decision_for_phase_1

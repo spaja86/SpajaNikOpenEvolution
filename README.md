@@ -54,15 +54,16 @@ Detalji su u `integration/backspace.feature.yml`.
 - **Test strategija** (unit, integration, regresija i edge slučajevi).
 - **Operativna spremnost** (telemetrija, rollback, feature flag).
 - **Release faze** (ograničeno puštanje, monitoring, širenje).
+- **Sve 3 implementacione opcije** (frontend input layer, domain/state logika, API/event contracts) su mapirane i specificirane.
 
 ### Šta je potrebno da bi implementacija krenula na kodu
 
 1. Migrirati postojeći platform kod u `./platform/` (u okviru ovog repozitorijuma).
 2. Popuniti lokalne putanje i URL-ove u `integration/repositories.local.yml` na osnovu `integration/repositories.example.yml`.
    - Vrednosti tipa `__set_*_path_in_repositories.local.yml__` znače da putanju moraš eksplicitno uneti lokalno.
-3. Potvrditi koji repozitorijum sadrži:
-   - frontend input handling,
-   - domain state management,
-   - API/event contracts.
+3. Podesiti lokalne putanje za sva 3 repozitorijuma/oblasti:
+   - frontend input handling (`frontend-input`),
+   - domain state management (`core-platform`),
+   - API/event contracts (`api-and-event-contracts`).
 
-Dok se to ne potvrdi, implementacija je pripremljena i specificirana, ali ne može biti izvršena nad realnim modulima.
+Dok se platform kod ne migrira i lokalne putanje ne popune, implementacija je pripremljena i specificirana, ali ne može biti izvršena nad realnim modulima.
