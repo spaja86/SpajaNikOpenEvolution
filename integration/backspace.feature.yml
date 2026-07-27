@@ -7,8 +7,8 @@ feature:
 
 scope:
   definition:
-    meaning: keyboard-or-softkey-delete-previous-unit
-    primary_context: text-like-user-input
+    meaning: keyboard_or_softkey_delete_previous_unit
+    primary_context: text_like_user_input
     out_of_scope:
       - destructive-record-deletion
       - admin-bulk-deletion
@@ -70,7 +70,7 @@ behavior_rules:
     unsupported_context: ignore-with-telemetry
   accessibility_i18n:
     - preserve-screen-reader-friendly-updates
-    - support-locale-aware-text-segmentation-where-applicable
+    - support-locale-aware-text-segmentation-for-grapheme-cluster-and-rtl-languages
 
 data_and_contracts:
   potential_changes:
@@ -108,7 +108,7 @@ verification:
     - run-existing-lint
     - run-existing-build
     - run-existing-tests
-  current_blocker: no-platform-source-present-in-this-repository-yet
+  current_blocker: pending-platform-migration
 
 operations:
   telemetry:
