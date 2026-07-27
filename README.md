@@ -35,3 +35,35 @@ Preporuka:
 - napravi lokalnu kopiju `integration/repositories.example.yml` kao `integration/repositories.local.yml`,
 - popuni realne URL-ove i putanje,
 - koristi te podatke za lokalno podizanje i koordinaciju servisa.
+
+## BACKSPACE implementacija (inicijalna specifikacija i rollout paket)
+
+Pošto kod platforme još nije migriran u `platform/`, ova faza implementacije uvodi:
+
+1. jedinstvenu specifikaciju ponašanja,
+2. mapu zavisnosti i granica odgovornosti,
+3. rollout/validacioni plan spreman za izvršavanje čim se izvorni kod unese.
+
+Detalji su u `integration/backspace.feature.yml`.
+
+### Šta je definisano
+
+- **Scope i ciljna ponašanja** za BACKSPACE akciju.
+- **User flow** i acceptance kriterijumi.
+- **Implementacioni redosled** (event plumbing → domain/state → UI/consumer).
+- **Test strategija** (unit, integration, regresija i edge slučajevi).
+- **Operativna spremnost** (telemetrija, rollback, feature flag).
+- **Release faze** (ograničeno puštanje, monitoring, širenje).
+- **Sve 3 implementacione opcije** (frontend input layer, domain/state logika, API/event contracts) su mapirane i specificirane.
+
+### Šta je potrebno da bi implementacija krenula na kodu
+
+1. Migrirati postojeći platform kod u `./platform/` (u okviru ovog repozitorijuma).
+2. Popuniti lokalne putanje i URL-ove u `integration/repositories.local.yml` na osnovu `integration/repositories.example.yml`.
+   - Placeholder vrednosti `<SET_FRONTEND_PATH>` i `<SET_SERVICE_PATH>` znače da putanju moraš eksplicitno uneti lokalno.
+3. Podesiti lokalne putanje za sva 3 repozitorijuma/oblasti:
+   - frontend input handling (`frontend-input`),
+   - domain state management (`core-platform`),
+   - API/event contracts (`api-and-event-contracts`).
+
+Dok se platform kod ne migrira i lokalne putanje ne popune, implementacija je pripremljena i specificirana, ali ne može biti izvršena nad realnim modulima.
