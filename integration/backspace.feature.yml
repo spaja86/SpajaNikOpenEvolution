@@ -78,7 +78,7 @@ data_and_contracts:
     - optional-input-edit-metadata
   compatibility_strategy:
     versioning: additive-non-breaking-first
-    gating: feature.backspace.v1
+    gating: feature.backspace.enabled
     migration: enable-by-consumer-capability
 
 rollout:
@@ -87,7 +87,7 @@ rollout:
     - domain-state-handling
     - ui-consumer-updates
   flag:
-    name: feature.backspace.v1
+    name: feature.backspace.enabled
     default: disabled
   activation:
     - internal-testing
@@ -137,7 +137,9 @@ release_followup:
     - no-regression-in-related-input-flows
     - stable-error-rate
 
-open_questions:
-  - Which repository contains the authoritative input handling implementation?
-  - Which API/event contract repository must be updated if intent events are emitted?
-  - Should mobile and desktop be in phase_1 or remain phase_2?
+required_inputs_before_code_implementation:
+  blocking: true
+  items:
+    - repository_for_authoritative_input_handling
+    - repository_for_api_or_event_contract_changes
+    - environment_scope_decision_for_phase_1
