@@ -70,8 +70,8 @@ behavior_rules:
     unsupported_context: ignore-with-telemetry
   accessibility_i18n:
     - preserve-screen-reader-friendly-updates
-    - locale_aware_text_segmentation
-    - rtl_language_support
+    - locale-aware-text-segmentation
+    - rtl-language-support
 
 data_and_contracts:
   potential_changes:

@@ -59,7 +59,7 @@ Detalji su u `integration/backspace.feature.yml`.
 
 1. Migrirati postojeći platform kod u `./platform/` (u okviru ovog repozitorijuma).
 2. Popuniti lokalne putanje i URL-ove u `integration/repositories.local.yml` na osnovu `integration/repositories.example.yml`.
-   - Vrednost `__set_in_repositories.local.yml__` znači da putanju moraš eksplicitno uneti lokalno.
+   - Vrednosti tipa `__set_*_path_in_repositories.local.yml__` znače da putanju moraš eksplicitno uneti lokalno.
 3. Potvrditi koji repozitorijum sadrži:
    - frontend input handling,
    - domain state management,
