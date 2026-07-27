@@ -57,7 +57,7 @@ Detalji su u `integration/backspace.feature.yml`.
 
 ### Šta je potrebno da bi implementacija krenula na kodu
 
-1. Migrirati postojeći platform kod u `/home/runner/work/SpajaNikOpenEvolution/SpajaNikOpenEvolution/platform/`.
+1. Migrirati postojeći platform kod u `./platform/` (u okviru ovog repozitorijuma).
 2. Popuniti lokalne putanje i URL-ove u `integration/repositories.local.yml` na osnovu `integration/repositories.example.yml`.
 3. Potvrditi koji repozitorijum sadrži:
    - frontend input handling,

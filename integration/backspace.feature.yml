@@ -33,7 +33,7 @@ implementation_boundaries:
   required_repositories:
     - role: core-platform
       from: integration/repositories.example.yml
-      expected_path: /home/runner/work/SpajaNikOpenEvolution/SpajaNikOpenEvolution/platform/
+      expected_path: ./platform/
       status: pending-migration
     - role: frontend-input
       status: to-be-confirmed
