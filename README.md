@@ -4,7 +4,7 @@ Centralni repozitorijum za migraciju i povezivanje postojeće **SpajaNikOpenEvol
 
 ## Cilj
 
-Pošto postojeća platforma već postoji na drugoj lokaciji (OpenAI okruženje), ovaj repozitorijum je pripremljen kao centralno mesto gde se:
+Pošto postojeća platforma već postoji na drugoj lokaciji (izvorni/eksterni repozitorijum), ovaj repozitorijum je pripremljen kao centralno mesto gde se:
 
 1. prenosi postojeći kod platforme,
 2. čuva struktura sistema,
