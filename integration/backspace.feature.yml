@@ -1,0 +1,143 @@
+feature:
+  name: BACKSPACE
+  status: specification-ready
+  summary: >
+    Standardizovana BACKSPACE akcija kroz klijentski input sloj, domain stanje i
+    integracione interfejse, sa kontrolisanim rollout-om.
+
+scope:
+  definition:
+    meaning: keyboard-or-softkey-delete-previous-unit
+    primary_context: text-like-user-input
+    out_of_scope:
+      - destructive-delete-record-actions
+      - admin-bulk-delete-operations
+  target_environments:
+    phase_1:
+      - web
+    phase_2:
+      - mobile
+      - desktop
+  affected_user_flows:
+    - edit-existing-input
+    - correct-typing-mistakes
+    - remove-last-character-when-focused
+  acceptance_criteria:
+    - single_backspace_removes_previous_unit
+    - repeated_backspace_works_while_key_held
+    - no_error_on_empty_state
+    - focus_context_rules_prevent_cross-field_deletion
+    - undo_redo_chain_preserved_when_supported
+
+implementation_boundaries:
+  required_repositories:
+    - role: core-platform
+      from: integration/repositories.example.yml
+      expected_path: /home/runner/work/SpajaNikOpenEvolution/SpajaNikOpenEvolution/platform/
+      status: pending-migration
+    - role: frontend-input
+      status: to-be-confirmed
+    - role: api-or-event-contracts
+      status: to-be-confirmed
+  module_mapping:
+    input_event_layer:
+      responsibility: detect-backspace-and-emit-intent
+      ownership: frontend
+    domain_application_logic:
+      responsibility: apply-deletion-rules-and-state-transitions
+      ownership: core-platform
+    integration_contracts:
+      responsibility: preserve-compatible-api-event-behavior
+      ownership: backend-or-shared-contracts
+
+behavior_rules:
+  single_action:
+    rule: delete-previous-unit-once
+  repeat_hold:
+    rule: repeat-delete-while-input-focused
+    stop_conditions:
+      - input-lost-focus
+      - empty-state-reached-and-no-op
+  empty_state:
+    rule: no-op-without-error
+  boundary_conditions:
+    - selection-range-deletes-selection-first
+    - cursor-at-start-results-in-no-op
+    - mixed-input-modes-must-not-duplicate-events
+  undo_redo:
+    rule: deletion-actions-must-be-undoable-when-undo-supported
+  fallback:
+    unsupported_context: ignore-with-telemetry
+  accessibility_i18n:
+    - preserve-screen-reader-friendly-updates
+    - support-locale-aware-text-segmentation-where-applicable
+
+data_and_contracts:
+  potential_changes:
+    - optional-backspace-intent-event
+    - optional-input-edit-metadata
+  compatibility_strategy:
+    versioning: additive-non-breaking-first
+    gating: feature-flag-backspace-v1
+    migration: enable-by-consumer-capability
+
+rollout:
+  order:
+    - foundation-event-recognition-and-routing
+    - domain-state-handling
+    - ui-consumer-updates
+  flag:
+    name: feature.backspace.v1
+    default: disabled
+  activation:
+    - internal-testing
+    - limited-cohort
+    - full-rollout
+
+verification:
+  required_test_layers:
+    - unit-core-rules
+    - integration-end-to-end-input-flow
+    - regression-adjacent-input-actions
+  mandatory_edge_cases:
+    - empty-input
+    - long-press-repeat
+    - mixed-input-mode
+    - concurrent-state-updates
+  quality_gates:
+    - run-existing-lint
+    - run-existing-build
+    - run-existing-tests
+  current_blocker: no-platform-source-present-in-this-repository-yet
+
+operations:
+  telemetry:
+    counters:
+      - backspace_invoked
+      - backspace_noop_empty
+      - backspace_unsupported_context
+    errors:
+      - backspace_processing_failure
+  rollback:
+    primary: disable-feature-flag
+    secondary: revert-feature-commits
+  docs:
+    include:
+      - behavior-spec
+      - configuration-flag-usage
+      - known-limitations
+
+release_followup:
+  phases:
+    - limited-rollout-monitoring
+    - staged-expansion
+    - post-release-hardening
+  success_signals:
+    - reduced-input-correction-friction
+    - no-regression-in-related-input-flows
+    - stable-error-rate
+
+open_questions:
+  - Which repository contains the authoritative input handling implementation?
+  - Which API/event contract repository must be updated if intent events are emitted?
+  - Should mobile and desktop be in phase_1 or remain phase_2?

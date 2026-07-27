@@ -6,7 +6,20 @@ integration:
         role: core-platform
         url: https://github.com/spaja86/SpajaNikOpenEvolution
         local_path: ./platform
+        capabilities:
+          - domain-state
+          - shared-core
+      - name: example-frontend
+        role: frontend-input
+        url: https://github.com/spaja86/example-frontend
+        local_path: ../example-frontend
+        capabilities:
+          - ui-input-events
+          - accessibility
       - name: example-service
-        role: service
+        role: api-or-event-contracts
         url: https://github.com/spaja86/example-service
         local_path: ../example-service
+        capabilities:
+          - api-contracts
+          - integration-events
