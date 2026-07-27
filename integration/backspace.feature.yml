@@ -2,16 +2,16 @@ feature:
   name: BACKSPACE
   status: specification-ready
   summary: >
-    Standardizovana BACKSPACE akcija kroz klijentski input sloj, domain stanje i
-    integracione interfejse, sa kontrolisanim rollout-om.
+    Standardized BACKSPACE behavior across input handling, domain state transitions,
+    and integration contracts with controlled rollout and validation gates.
 
 scope:
   definition:
     meaning: keyboard-or-softkey-delete-previous-unit
     primary_context: text-like-user-input
     out_of_scope:
-      - destructive-delete-record-actions
-      - admin-bulk-delete-operations
+      - destructive-record-deletion
+      - admin-bulk-deletion
   target_environments:
     phase_1:
       - web
@@ -65,7 +65,7 @@ behavior_rules:
     - cursor-at-start-results-in-no-op
     - mixed-input-modes-must-not-duplicate-events
   undo_redo:
-    rule: deletion-actions-must-be-undoable-when-undo-supported
+    rule: backspace-operations-register-undo-steps-when-supported
   fallback:
     unsupported_context: ignore-with-telemetry
   accessibility_i18n:
