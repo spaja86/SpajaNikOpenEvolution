@@ -47,7 +47,7 @@ implementation_boundaries:
     input_event_layer:
       option: 1
       responsibility: detect-backspace-and-emit-intent
-      ownership: frontend
+      ownership: frontend-input
     domain_application_logic:
       option: 2
       responsibility: apply-deletion-rules-and-state-transitions
@@ -55,7 +55,7 @@ implementation_boundaries:
     integration_contracts:
       option: 3
       responsibility: preserve-compatible-api-event-behavior
-      ownership: backend-or-shared-contracts
+      ownership: api-and-event-contracts
 
 implementation_options:
   option_1_frontend_input_event_layer:
