@@ -70,7 +70,7 @@ behavior_rules:
     unsupported_context: ignore-with-telemetry
   accessibility_i18n:
     - preserve-screen-reader-friendly-updates
-    - support-locale-aware-text-segmentation-for-grapheme-cluster-and-rtl-languages
+    - support_locale_aware_text_segmentation_for_grapheme_cluster_and_rtl_languages
 
 data_and_contracts:
   potential_changes:
@@ -138,7 +138,6 @@ release_followup:
     - stable-error-rate
 
 required_inputs_before_code_implementation:
-  blocking: true
   items:
     - repository_for_authoritative_input_handling
     - repository_for_api_or_event_contract_changes
