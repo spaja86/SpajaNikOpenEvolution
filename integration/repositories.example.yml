@@ -17,7 +17,7 @@ integration:
           - ui-input-events
           - accessibility
       - name: example-service
-        role: api-or-event-contracts
+        role: api-and-event-contracts
         url: https://github.com/spaja86/example-service
         local_path: ./_external/example-service
         capabilities:

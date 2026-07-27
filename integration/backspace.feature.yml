@@ -37,7 +37,7 @@ implementation_boundaries:
       status: pending-migration
     - role: frontend-input
       status: to-be-confirmed
-    - role: api-or-event-contracts
+    - role: api-and-event-contracts
       status: to-be-confirmed
   module_mapping:
     input_event_layer:
