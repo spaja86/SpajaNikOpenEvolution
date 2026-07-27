@@ -1,0 +1,12 @@
+integration:
+  system:
+    name: SpajaNik Combined System
+    repositories:
+      - name: SpajaNikOpenEvolution
+        role: core-platform
+        url: https://github.com/spaja86/SpajaNikOpenEvolution
+        local_path: ./platform
+      - name: example-service
+        role: service
+        url: https://github.com/spaja86/example-service
+        local_path: ../example-service
