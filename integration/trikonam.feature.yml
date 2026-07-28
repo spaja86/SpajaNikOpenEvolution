@@ -1,0 +1,191 @@
+feature:
+  name: TRIKONAM
+  status: specification_ready
+  summary: >
+    Standardized TRIKONAM behavior — a three-point selection/navigation action —
+    across input handling, domain state transitions, and integration contracts,
+    with controlled rollout and validation gates.
+
+scope:
+  definition:
+    meaning: three_point_user_selection_or_navigation_action
+    primary_context: structured_user_interaction_requiring_three_step_confirmation_or_selection
+    out_of_scope:
+      - unstructured-free-form-input
+      - single-step-or-binary-user-decisions
+      - admin-bulk-operations
+  target_environments:
+    phase_1:
+      - web
+    phase_2:
+      - mobile
+      - desktop
+  affected_user_flows:
+    - three-step-selection-or-confirmation
+    - multi-point-navigation-sequence
+    - structured-form-wizard-or-guided-flow
+  acceptance_criteria:
+    - trikonam_action_requires_three_distinct_interaction_points
+    - partial_completion_persists_intermediate_state_without_committing
+    - abandoning_mid_flow_restores_prior_state_cleanly
+    - completion_of_all_three_steps_emits_single_committed_intent
+    - no_error_on_premature_cancellation_or_timeout
+    - focus_context_rules_prevent_cross_flow_contamination
+    - undo_redo_chain_preserved_when_supported
+
+implementation_boundaries:
+  required_repositories:
+    - role: core-platform
+      from: integration/repositories.example.yml
+      expected_path: ./platform
+      status: awaiting_migration
+    - role: frontend-input
+      from: integration/repositories.example.yml
+      expected_path: <SET_FRONTEND_PATH>
+      status: configured
+    - role: api-and-event-contracts
+      from: integration/repositories.example.yml
+      expected_path: <SET_SERVICE_PATH>
+      status: configured
+  module_mapping:
+    input_event_layer:
+      option: 1
+      responsibility: detect-trikonam-steps-and-emit-intent
+      ownership: frontend-input
+    domain_application_logic:
+      option: 2
+      responsibility: apply-three-step-rules-and-state-transitions
+      ownership: core-platform
+    integration_contracts:
+      option: 3
+      responsibility: preserve-compatible-api-event-behavior-for-trikonam
+      ownership: api-and-event-contracts
+
+implementation_options:
+  option_1_frontend_input_event_layer:
+    scope: detect-trikonam-steps-and-emit-intent
+    owner_role: frontend-input
+    status: specified
+  option_2_domain_application_logic:
+    scope: apply-three-step-rules-and-state-transitions
+    owner_role: core-platform
+    status: specified
+  option_3_api_and_event_contracts:
+    scope: preserve-compatible-api-event-behavior-for-trikonam
+    owner_role: api-and-event-contracts
+    status: specified
+
+behavior_rules:
+  step_sequence:
+    rule: each-trikonam-step-must-be-acknowledged-before-advancing
+    total_steps: 3
+  intermediate_state:
+    rule: persist-partial-progress-without-side-effects-until-final-commit
+  cancellation:
+    rule: rollback-all-intermediate-state-on-cancel-or-timeout
+    timeout_behavior: treat-as-cancellation-with-clean-restore
+  completion:
+    rule: emit-committed-trikonam-intent-only-after-all-three-steps-confirmed
+  empty_state:
+    rule: no-op-without-error-if-action-starts-with-no-eligible-target
+  boundary_conditions:
+    - step-2-or-step-3-without-prior-step-must-be-rejected-gracefully
+    - concurrent-trikonam-sessions-must-not-interfere
+    - mixed-input-modes-must-not-duplicate-step-events
+  undo_redo:
+    rule: trikonam-operations-register-undo-steps-when-supported
+    scope: full-sequence-treated-as-atomic-undo-unit
+  fallback:
+    unsupported_context: ignore-with-telemetry
+  accessibility_i18n:
+    - preserve-screen-reader-friendly-step-announcements
+    - locale-aware-label-and-instruction-rendering
+    - rtl-language-support-for-step-indicators
+
+data_and_contracts:
+  potential_changes:
+    - optional-trikonam-step-event
+    - optional-trikonam-intent-committed-event
+    - optional-trikonam-session-metadata
+  compatibility_strategy:
+    versioning: additive-non-breaking-first
+    gating: feature.trikonam.enabled
+    migration: enable-by-consumer-capability
+
+rollout:
+  order:
+    - foundation-step-event-recognition-and-routing
+    - domain-state-handling-and-sequence-validation
+    - ui-consumer-updates-and-step-indicators
+  flag:
+    name: feature.trikonam.enabled
+    default: disabled
+  activation:
+    - internal-testing
+    - limited-cohort
+    - full-rollout
+
+verification:
+  required_test_layers:
+    - unit-core-step-rules
+    - integration-end-to-end-three-step-flow
+    - regression-adjacent-input-and-selection-actions
+  mandatory_edge_cases:
+    - premature-cancellation-after-step-1
+    - premature-cancellation-after-step-2
+    - timeout-during-step-2
+    - concurrent-trikonam-sessions
+    - mixed-input-mode-across-steps
+    - rapid-sequential-completion
+  quality_gates:
+    - run-existing-lint
+    - run-existing-build
+    - run-existing-tests
+
+blockers:
+  - pending-platform-migration
+  - trikonam-domain-definition-requires-confirmation
+
+operations:
+  telemetry:
+    counters:
+      - trikonam_invoked
+      - trikonam_step_1_completed
+      - trikonam_step_2_completed
+      - trikonam_step_3_completed
+      - trikonam_committed
+      - trikonam_cancelled
+      - trikonam_noop_no_eligible_target
+      - trikonam_unsupported_context
+    errors:
+      - trikonam_processing_failure
+      - trikonam_state_restore_failure
+  rollback:
+    primary: disable-feature-flag
+    secondary: revert-feature-commits
+  docs:
+    include:
+      - behavior-spec
+      - step-sequence-diagram
+      - configuration-flag-usage
+      - cancellation-and-timeout-rules
+      - known-limitations
+
+release_followup:
+  phases:
+    - limited-rollout-monitoring
+    - staged-expansion
+    - post-release-hardening
+  success_signals:
+    - trikonam-flow-completion-rate-above-threshold
+    - no-regression-in-adjacent-selection-or-input-flows
+    - stable-error-rate
+
+required_inputs_before_code_implementation:
+  items:
+    - migrate-core-platform-code-into-platform
+    - set-local-frontend-path-in-repositories-local-yml
+    - set-local-service-path-in-repositories-local-yml
+    - confirm-trikonam-domain-meaning-and-three-step-trigger-definition
+    - decide-phase-1-environment-scope
+    - define-timeout-duration-for-incomplete-trikonam-sessions

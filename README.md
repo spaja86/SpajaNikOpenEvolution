@@ -16,7 +16,9 @@ Pošto postojeća platforma već postoji na drugoj lokaciji (izvorni/eksterni re
 .
 ├── platform/                 # postojeći kod platforme koji se prenosi
 └── integration/
-    └── repositories.example.yml
+    ├── repositories.example.yml
+    ├── backspace.feature.yml
+    └── trikonam.feature.yml
 ```
 
 ## Migracija postojeće platforme
@@ -35,6 +37,29 @@ Preporuka:
 - napravi lokalnu kopiju `integration/repositories.example.yml` kao `integration/repositories.local.yml`,
 - popuni realne URL-ove i putanje,
 - koristi te podatke za lokalno podizanje i koordinaciju servisa.
+
+## TRIKONAM implementacija (inicijalna specifikacija i rollout paket)
+
+Specifikacija za TRIKONAM — trostepenu selekcijsku/navigacionu akciju — definisana je u `integration/trikonam.feature.yml`.
+
+### Šta je definisano
+
+- **Scope i ciljna ponašanja** za TRIKONAM akciju (trostepena sekvenca sa međustatom).
+- **User flow** i acceptance kriterijumi.
+- **Implementacioni redosled** (event plumbing → domain/state → UI/consumer).
+- **Test strategija** (unit, integration, regresija i edge slučajevi).
+- **Operativna spremnost** (telemetrija, rollback, feature flag `feature.trikonam.enabled`).
+- **Release faze** (ograničeno puštanje, monitoring, širenje).
+- **Sve 3 implementacione opcije** (frontend input layer, domain/state logika, API/event contracts) su mapirane i specificirane.
+
+### Šta je potrebno da bi implementacija krenula na kodu
+
+1. Migrirati postojeći platform kod u `./platform/`.
+2. Popuniti lokalne putanje u `integration/repositories.local.yml`.
+3. Potvrditi precizno značenje TRIKONAM akcije i definiciju trostepenog trigera.
+4. Definisati timeout trajanje za nedovršene TRIKONAM sesije.
+
+---
 
 ## BACKSPACE implementacija (inicijalna specifikacija i rollout paket)
 
