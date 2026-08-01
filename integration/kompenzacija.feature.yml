@@ -1,0 +1,248 @@
+feature:
+  name: KOMPENZACIJA
+  status: specification_ready
+  summary: >
+    Standardized compensation workflow across input validation, domain state transitions,
+    and integration contracts — enabling controlled, traceable compensation of actions,
+    obligations, or values within the SpajaNik platform, with feature-flagged rollout
+    and full audit trail support.
+
+scope:
+  definition:
+    meaning: >
+      compensate-or-offset-an-existing-obligation-action-or-value-within-the-system.
+      Kompenzacija covers both UI-driven user corrections and domain-level offsetting
+      of recorded obligations (financial, operational, or contractual), depending on
+      the active context.
+    primary_context: domain-state-and-obligation-management
+    out_of_scope:
+      - hard-delete-of-records
+      - admin-bulk-reversal
+      - unaudited-silent-override
+      - compensation-without-originating-record
+  target_environments:
+    phase_1:
+      - web
+    phase_2:
+      - mobile
+      - desktop
+  affected_user_flows:
+    - submit-compensation-against-existing-obligation
+    - review-compensation-status
+    - cancel-pending-compensation
+    - audit-compensation-history
+  acceptance_criteria:
+    - single_compensation_creates_offsetting_record
+    - compensation_cannot_exceed_original_obligation_value
+    - partial_compensation_leaves_remainder_tracked
+    - duplicate_compensation_for_same_obligation_is_rejected
+    - cancelled_or_failed_compensation_restores_original_state
+    - all_compensation_events_are_auditable
+    - user_receives_confirmation_or_error_feedback
+
+implementation_boundaries:
+  required_repositories:
+    - role: core-platform
+      from: integration/repositories.example.yml
+      expected_path: ./platform
+      status: awaiting_migration
+    - role: frontend-input
+      from: integration/repositories.example.yml
+      expected_path: <SET_FRONTEND_PATH>
+      status: configured
+    - role: api-and-event-contracts
+      from: integration/repositories.example.yml
+      expected_path: <SET_SERVICE_PATH>
+      status: configured
+  module_mapping:
+    input_event_layer:
+      option: 1
+      responsibility: >
+        capture-compensation-intent-from-user-validate-form-inputs-and-emit-compensation-requested-event
+      ownership: frontend-input
+    domain_application_logic:
+      option: 2
+      responsibility: >
+        validate-eligibility-apply-offsetting-rules-update-obligation-state-and-emit-domain-events
+      ownership: core-platform
+    integration_contracts:
+      option: 3
+      responsibility: >
+        define-compensation-api-endpoints-event-schemas-and-preserve-backward-compatible-contracts
+      ownership: api-and-event-contracts
+
+implementation_options:
+  option_1_frontend_input_event_layer:
+    scope: capture-compensation-intent-and-emit-event
+    owner_role: frontend-input
+    status: specified
+    details:
+      - render-compensation-form-or-action-trigger
+      - validate-input-fields-before-submission
+      - emit-kompenzacija-requested-intent-event
+      - display-pending-confirmation-and-result-feedback
+      - handle-error-states-from-domain-response
+  option_2_domain_application_logic:
+    scope: apply-compensation-rules-and-state-transitions
+    owner_role: core-platform
+    status: specified
+    details:
+      - receive-kompenzacija-requested-event
+      - validate-originating-obligation-exists-and-is-eligible
+      - enforce-compensation-amount-does-not-exceed-outstanding-balance
+      - create-offsetting-kompenzacija-record-in-domain-state
+      - update-obligation-status-to-partially-compensated-or-fully-compensated
+      - emit-kompenzacija-applied-or-kompenzacija-failed-domain-events
+      - register-compensation-step-in-audit-log
+  option_3_api_and_event_contracts:
+    scope: define-and-preserve-api-and-event-schemas
+    owner_role: api-and-event-contracts
+    status: specified
+    details:
+      - define-POST-kompenzacija-endpoint-with-request-and-response-schema
+      - define-GET-kompenzacija-status-endpoint
+      - define-kompenzacija-requested-event-schema
+      - define-kompenzacija-applied-event-schema
+      - define-kompenzacija-failed-event-schema
+      - version-contracts-additively-to-preserve-backward-compatibility
+
+behavior_rules:
+  single_action:
+    rule: >
+      one-compensation-submission-creates-exactly-one-offsetting-record-against-the-target-obligation
+  partial_compensation:
+    rule: >
+      if-compensation-amount-is-less-than-outstanding-balance-remainder-is-tracked-and-obligation-remains-open
+  full_compensation:
+    rule: >
+      if-compensation-amount-equals-outstanding-balance-obligation-is-marked-fully-compensated-and-closed
+  over_compensation:
+    rule: reject-with-validation-error-if-compensation-amount-exceeds-outstanding-balance
+  duplicate_guard:
+    rule: >
+      reject-if-identical-compensation-for-same-obligation-and-amount-is-already-pending-or-applied
+  empty_obligation:
+    rule: no-op-without-error-if-obligation-has-zero-outstanding-balance
+  cancellation:
+    rule: >
+      pending-compensation-can-be-cancelled-before-domain-confirmation-restoring-original-obligation-state
+  boundary_conditions:
+    - concurrent-compensations-on-same-obligation-must-use-optimistic-locking-or-queue
+    - compensation-on-non-existent-obligation-returns-not-found-error
+    - compensation-on-already-closed-obligation-is-rejected-with-clear-message
+    - negative-or-zero-amount-is-rejected-at-input-layer
+  undo_redo:
+    rule: >
+      compensations-register-as-reversible-steps-in-audit-chain-when-cancellation-is-supported
+  fallback:
+    unsupported_context: ignore-with-telemetry-and-return-not-applicable-response
+  accessibility_i18n:
+    - preserve-screen-reader-friendly-form-and-status-updates
+    - locale-aware-number-and-currency-formatting
+    - rtl-language-support-for-form-and-feedback-components
+
+data_and_contracts:
+  potential_changes:
+    - new-kompenzacija-domain-entity
+    - optional-kompenzacija-requested-intent-event
+    - optional-kompenzacija-applied-domain-event
+    - optional-kompenzacija-failed-domain-event
+    - updated-obligation-aggregate-to-carry-compensation-balance
+    - new-POST-kompenzacija-api-endpoint
+    - new-GET-kompenzacija-status-api-endpoint
+  compatibility_strategy:
+    versioning: additive-non-breaking-first
+    gating: feature.kompenzacija.enabled
+    migration: enable-by-consumer-capability
+  data_model_notes:
+    - kompenzacija-record-references-obligation-id-amount-currency-timestamp-and-actor
+    - obligation-aggregate-tracks-total-compensated-and-remaining-balance
+    - audit-log-entries-include-before-and-after-state-snapshots
+
+rollout:
+  order:
+    - api-and-event-contract-definitions
+    - domain-eligibility-and-state-transition-logic
+    - frontend-form-and-intent-event-emission
+    - end-to-end-flow-validation
+  flag:
+    name: feature.kompenzacija.enabled
+    default: disabled
+  activation:
+    - internal-testing
+    - limited-cohort
+    - full-rollout
+
+verification:
+  required_test_layers:
+    - unit-domain-rules-and-eligibility-checks
+    - unit-amount-boundary-conditions
+    - integration-end-to-end-compensation-submission-flow
+    - integration-concurrent-compensation-conflict-resolution
+    - regression-adjacent-obligation-flows
+  mandatory_edge_cases:
+    - zero-balance-obligation
+    - compensation-equals-exact-outstanding-balance
+    - compensation-exceeds-outstanding-balance
+    - duplicate-submission
+    - concurrent-submissions-on-same-obligation
+    - cancellation-of-pending-compensation
+    - non-existent-obligation-id
+    - already-closed-obligation
+    - negative-input-amount
+  quality_gates:
+    - run-existing-lint
+    - run-existing-build
+    - run-existing-tests
+    - audit-log-entries-verified-for-all-state-transitions
+
+blockers:
+  - pending-platform-migration
+
+operations:
+  telemetry:
+    counters:
+      - kompenzacija_invoked
+      - kompenzacija_applied_full
+      - kompenzacija_applied_partial
+      - kompenzacija_rejected_over_limit
+      - kompenzacija_rejected_duplicate
+      - kompenzacija_noop_zero_balance
+      - kompenzacija_cancelled
+    errors:
+      - kompenzacija_processing_failure
+      - kompenzacija_optimistic_lock_conflict
+      - kompenzacija_contract_validation_error
+  rollback:
+    primary: disable-feature-flag
+    secondary: revert-feature-commits
+    data_recovery: cancel-all-pending-compensations-before-disabling
+  docs:
+    include:
+      - behavior-spec
+      - data-model-and-entity-description
+      - configuration-flag-usage
+      - api-endpoint-reference
+      - event-schema-reference
+      - known-limitations-and-edge-cases
+
+release_followup:
+  phases:
+    - limited-rollout-monitoring-of-compensation-volume-and-error-rates
+    - staged-expansion-to-additional-obligation-types
+    - post-release-hardening-of-concurrency-and-audit
+  success_signals:
+    - compensation-submissions-processed-without-data-inconsistency
+    - no-regression-in-related-obligation-management-flows
+    - audit-log-completeness-verified-in-production-sample
+    - stable-error-rate-below-threshold
+
+required_inputs_before_code_implementation:
+  items:
+    - migrate-core-platform-code-into-platform
+    - set-local-frontend-path-in-repositories-local-yml
+    - set-local-service-path-in-repositories-local-yml
+    - confirm-obligation-domain-model-location-in-core-platform
+    - confirm-currency-and-amount-precision-requirements
+    - confirm-whether-partial-compensation-is-in-scope-for-phase-1
+    - decide-phase-1-environment-scope
