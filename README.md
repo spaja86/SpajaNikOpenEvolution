@@ -61,6 +61,40 @@ Specifikacija za TRIKONAM — trostepenu selekcijsku/navigacionu akciju — defi
 
 ---
 
+## EVRYTHING FOR ALL (inicijalna specifikacija i rollout paket)
+
+Ova inicijativa je definisana u `integration/evrything-for-all.feature.yml`.
+
+### Cilj
+
+EVRYTHING FOR ALL je **međuslojni (cross-cutting) rollout paket** čiji je cilj da sve platformske sposobnosti (BACKSPACE, TRIKONAM i buduće funkcionalnosti) budu dostupne **svim korisnicima** na **svim okruženjima** (web, mobilni, desktop) — bez faznih isključivanja ili ograničenja po korisničkoj ulozi.
+
+### Relacija prema BACKSPACE i TRIKONAM
+
+Ova inicijativa upravlja **finalnim full-rollout aktiviranjem** BACKSPACE i TRIKONAM funkcionalnosti:
+
+- Feature flag `feature.evrything-for-all.enabled` aktivira sve podređene flagove (`feature.backspace.enabled`, `feature.trikonam.enabled`) po defaultu.
+- Individualni feature flagovi i dalje mogu biti isključeni nezavisno u svrhu rollbacka.
+
+### Šta je definisano
+
+- **Scope i ciljna ponašanja** za inicijativu (univerzalna dostupnost bez faznih isključivanja).
+- **User flow pokrivenost**: svi postojeći flows (input editing, trostepena selekcija, navigacija) i budući.
+- **Implementacioni redosled**: aktivacija svih flagova → provera paritetnosti između okruženja → full rollout.
+- **Test strategija** (unit po funkcionalnosti, integracija između okruženja, regresija svih postojećih flows).
+- **Operativna spremnost** (telemetrija, rollback, feature flag `feature.evrything-for-all.enabled`).
+- **Release faze** (internal testing → full rollout, bez limited-cohort faze).
+- **Sve 3 implementacione opcije** (frontend input adapteri za sva okruženja, uklanjanje environment-phase gateova u core-platform, multi-client API contracts) su mapirane i specificirane.
+
+### Šta je potrebno da bi implementacija krenula na kodu
+
+1. Migrirati postojeći platform kod u `./platform/`.
+2. Popuniti lokalne putanje u `integration/repositories.local.yml`.
+3. Potvrditi dostupnost mobilnog i desktop adaptera u `frontend-input` repozitorijumu.
+4. Potvrditi da API contract verzioning u `api-and-event-contracts` podržava sve tipove klijenata.
+
+---
+
 ## BACKSPACE implementacija (inicijalna specifikacija i rollout paket)
 
 Pošto kod platforme još nije migriran u `platform/`, ova faza implementacije uvodi:
