@@ -95,6 +95,46 @@ Ova inicijativa upravlja **finalnim full-rollout aktiviranjem** BACKSPACE i TRIK
 
 ---
 
+## GOVECE delivery framework (inicijalna specifikacija i rollout paket)
+
+Specifikacija za GOVECE je definisana u `integration/govece.feature.yml`.
+
+### Šta je GOVECE
+
+GOVECE predstavlja **delivery readiness framework** za primenu i koordinaciju
+specifikacija kroz ceo sistem:
+
+- G = Greed
+- O = Oblivion
+- V = Vercel
+- E = Ex
+- C = Centar
+- E = Excuite
+
+### DREEM TEAM i "Ready to all"
+
+GOVECE je postavljen sa **DREEM TEAM** ownership modelom i scope-om
+`to all / ready to all`, što znači:
+
+- primena kroz sve sekcije (scope, mapping, validacija, rollout, fallback),
+- pokrivanje svih ciljnih okruženja (web, mobile, desktop),
+- jedinstven delivery/checklist model za sve buduće funkcionalnosti.
+
+### Šta je definisano
+
+- **Eksplicitna definicija i očekivani ishod** GOVECE inicijative.
+- **Mapiranje na repozitorijume i module** (entry points, config, quality surfaces).
+- **Current-state baseline** nad postojećim feature specifikacijama.
+- **Merljivi target behavior i acceptance kriterijumi**.
+- **Fazni plan** (foundation, integration, validation, rollout readiness).
+- **Update matrix** (code, configuration, tests, documentation, CI).
+- **Rizici i zavisnosti** (tehnički, data/migration, kompatibilnost, operativa).
+- **Validation strategija** (automatska + manuelna + exit kriterijumi).
+- **Rollout/fallback strategija** sa monitoring signalima.
+- **Prioritizovan execution checklist** sa zavisnostima i done definicijom.
+
+---
+
 ## BACKSPACE implementacija (inicijalna specifikacija i rollout paket)
 
 Pošto kod platforme još nije migriran u `platform/`, ova faza implementacije uvodi:
