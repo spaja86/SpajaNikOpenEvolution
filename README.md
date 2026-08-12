@@ -95,13 +95,13 @@ Ova inicijativa upravlja **finalnim full-rollout aktiviranjem** BACKSPACE i TRIK
 
 ---
 
-## GOVECE delivery framework (inicijalna specifikacija i rollout paket)
+## GOVECE delivery okvir (inicijalna specifikacija i rollout paket)
 
 Specifikacija za GOVECE je definisana u `integration/govece.feature.yml`.
 
 ### Šta je GOVECE
 
-GOVECE predstavlja **delivery readiness framework** za primenu i koordinaciju
+GOVECE predstavlja **okvir spremnosti isporuke** za primenu i koordinaciju
 specifikacija kroz ceo sistem:
 
 - G = Greed
@@ -111,29 +111,29 @@ specifikacija kroz ceo sistem:
 - C = Centar
 - E = Excuite
 
-Napomena: termini su preuzeti i zadržani u originalnom obliku prema potvrđenom stakeholder unosu.
+Napomena: termini su preuzeti i zadržani u originalnom obliku prema potvrđenom unosu stejkholdera.
 
 ### DREEM TEAM i "Ready to all"
 
-GOVECE je postavljen sa **DREEM TEAM** ownership modelom i scope-om
+GOVECE je postavljen sa **DREEM TEAM** modelom vlasništva i opsegom
 `to all / ready to all`, što znači:
 
-- primena kroz sve sekcije (scope, mapping, validacija, rollout, fallback),
+- primena kroz sve sekcije (opseg, mapiranje, validacija, rollout, fallback),
 - pokrivanje svih ciljnih okruženja (web, mobile, desktop),
-- jedinstven delivery/checklist model za sve buduće funkcionalnosti.
+- jedinstven model isporuke i kontrolne liste za sve buduće funkcionalnosti.
 
 ### Šta je definisano
 
 - **Eksplicitna definicija i očekivani ishod** GOVECE inicijative.
-- **Mapiranje na repozitorijume i module** (entry points, config, quality surfaces).
-- **Current-state baseline** nad postojećim feature specifikacijama.
-- **Merljivi target behavior i acceptance kriterijumi**.
+- **Mapiranje na repozitorijume i module** (ulazne tačke, konfiguracija, površine kvaliteta).
+- **Početni presek stanja** nad postojećim feature specifikacijama.
+- **Merljivo ciljno ponašanje i acceptance kriterijumi**.
 - **Fazni plan** (foundation, integration, validation, rollout readiness).
-- **Update matrix** (code, configuration, tests, documentation, CI).
+- **Matrica izmena** (code, configuration, tests, documentation, CI).
 - **Rizici i zavisnosti** (tehnički, data/migration, kompatibilnost, operativa).
-- **Validation strategija** (automatska + manuelna + exit kriterijumi).
+- **Strategija validacije** (automatska + manuelna + exit kriterijumi).
 - **Rollout/fallback strategija** sa monitoring signalima.
-- **Prioritizovan execution checklist** sa zavisnostima i done definicijom.
+- **Prioritizovana izvršna kontrolna lista** sa zavisnostima i done definicijom.
 
 ---
 
