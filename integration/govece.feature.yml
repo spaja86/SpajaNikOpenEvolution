@@ -11,6 +11,7 @@ feature:
     E1: ex
     C: centar
     E2: excuite
+  acronym_note: stakeholder-provided-terms-preserved-verbatim
   stakeholder_confirmation:
     status: confirmed
     note: confirmed-as-ready-to-all

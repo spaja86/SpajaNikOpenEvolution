@@ -111,6 +111,8 @@ specifikacija kroz ceo sistem:
 - C = Centar
 - E = Excuite
 
+Napomena: termini su preuzeti i zadržani u originalnom obliku prema potvrđenom stakeholder unosu.
+
 ### DREEM TEAM i "Ready to all"
 
 GOVECE je postavljen sa **DREEM TEAM** ownership modelom i scope-om
